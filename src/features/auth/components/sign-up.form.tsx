@@ -19,7 +19,7 @@ export default function SignUpForm() {
     onSubmit: async ({ value }) => {
       await authClient.signUp.email(value, {
         onSuccess: () => {
-          navigate({ to: '/' })
+          navigate({ to: '/dashboard' })
         },
         onError: ({ error }) => {
           setErrorMessage(error.message)

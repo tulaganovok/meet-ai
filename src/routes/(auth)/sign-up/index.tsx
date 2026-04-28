@@ -1,6 +1,7 @@
 import { Button } from '#/components/ui/button'
 import { Card, CardContent } from '#/components/ui/card'
 import SignUpForm from '#/features/auth/components/sign-up.form'
+import { useOAuth } from '#/features/auth/hooks/use-oauth'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { FaGithub, FaGoogle } from 'react-icons/fa'
 
@@ -9,6 +10,8 @@ export const Route = createFileRoute('/(auth)/sign-up/')({
 })
 
 function SignUpPage() {
+  const { isPending, signIn } = useOAuth()
+
   return (
     <div className='flex flex-col gap-6'>
       <Card className='overflow-hidden p-0'>
@@ -29,12 +32,22 @@ function SignUpPage() {
               </div>
 
               <div className='grid grid-cols-2 gap-4'>
-                <Button variant='outline' className='w-full'>
+                <Button
+                  variant='outline'
+                  className='w-full'
+                  disabled={isPending}
+                  onClick={() => signIn('github')}
+                >
                   <FaGithub />
                   Github
                 </Button>
 
-                <Button variant='outline' className='w-full'>
+                <Button
+                  variant='outline'
+                  className='w-full'
+                  disabled={isPending}
+                  onClick={() => signIn('google')}
+                >
                   <FaGoogle />
                   Google
                 </Button>

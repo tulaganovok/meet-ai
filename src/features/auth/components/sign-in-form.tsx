@@ -21,7 +21,7 @@ export default function SignInForm() {
         { email: value.email, password: value.password },
         {
           onSuccess: () => {
-            navigate({ to: '/' })
+            navigate({ to: '/dashboard' })
           },
           onError: ({ error }) => {
             setErrorMessage(error.message)

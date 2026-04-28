@@ -9,21 +9,32 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
+import { Route as marketingRouteRouteImport } from './routes/(marketing)/route'
 import { Route as authRouteRouteImport } from './routes/(auth)/route'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as marketingIndexRouteImport } from './routes/(marketing)/index'
 import { Route as authSignUpIndexRouteImport } from './routes/(auth)/sign-up/index'
 import { Route as authSignInIndexRouteImport } from './routes/(auth)/sign-in/index'
 import { Route as ApiTrpcSplatRouteImport } from './routes/api.trpc.$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
+const DashboardRouteRoute = DashboardRouteRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const marketingRouteRoute = marketingRouteRouteImport.update({
+  id: '/(marketing)',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const authRouteRoute = authRouteRouteImport.update({
   id: '/(auth)',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const marketingIndexRoute = marketingIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => marketingRouteRoute,
 } as any)
 const authSignUpIndexRoute = authSignUpIndexRouteImport.update({
   id: '/sign-up/',
@@ -47,14 +58,16 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteRoute
+  '/': typeof marketingIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
   '/sign-in/': typeof authSignInIndexRoute
   '/sign-up/': typeof authSignUpIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteRoute
+  '/': typeof marketingIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
   '/sign-in': typeof authSignInIndexRoute
@@ -62,8 +75,10 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/(auth)': typeof authRouteRouteWithChildren
+  '/(marketing)': typeof marketingRouteRouteWithChildren
+  '/dashboard': typeof DashboardRouteRoute
+  '/(marketing)/': typeof marketingIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
   '/(auth)/sign-in/': typeof authSignInIndexRoute
@@ -71,13 +86,27 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/auth/$' | '/api/trpc/$' | '/sign-in/' | '/sign-up/'
+  fullPaths:
+    | '/dashboard'
+    | '/'
+    | '/api/auth/$'
+    | '/api/trpc/$'
+    | '/sign-in/'
+    | '/sign-up/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/auth/$' | '/api/trpc/$' | '/sign-in' | '/sign-up'
+  to:
+    | '/dashboard'
+    | '/'
+    | '/api/auth/$'
+    | '/api/trpc/$'
+    | '/sign-in'
+    | '/sign-up'
   id:
     | '__root__'
-    | '/'
     | '/(auth)'
+    | '/(marketing)'
+    | '/dashboard'
+    | '/(marketing)/'
     | '/api/auth/$'
     | '/api/trpc/$'
     | '/(auth)/sign-in/'
@@ -85,14 +114,29 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   authRouteRoute: typeof authRouteRouteWithChildren
+  marketingRouteRoute: typeof marketingRouteRouteWithChildren
+  DashboardRouteRoute: typeof DashboardRouteRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiTrpcSplatRoute: typeof ApiTrpcSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(marketing)': {
+      id: '/(marketing)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof marketingRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(auth)': {
       id: '/(auth)'
       path: ''
@@ -100,12 +144,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/(marketing)/': {
+      id: '/(marketing)/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof marketingIndexRouteImport
+      parentRoute: typeof marketingRouteRoute
     }
     '/(auth)/sign-up/': {
       id: '/(auth)/sign-up/'
@@ -152,9 +196,22 @@ const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
   authRouteRouteChildren,
 )
 
+interface marketingRouteRouteChildren {
+  marketingIndexRoute: typeof marketingIndexRoute
+}
+
+const marketingRouteRouteChildren: marketingRouteRouteChildren = {
+  marketingIndexRoute: marketingIndexRoute,
+}
+
+const marketingRouteRouteWithChildren = marketingRouteRoute._addFileChildren(
+  marketingRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   authRouteRoute: authRouteRouteWithChildren,
+  marketingRouteRoute: marketingRouteRouteWithChildren,
+  DashboardRouteRoute: DashboardRouteRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiTrpcSplatRoute: ApiTrpcSplatRoute,
 }
@@ -163,10 +220,11 @@ export const routeTree = rootRouteImport
   ._addFileTypes<FileRouteTypes>()
 
 import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
+import type { startInstance } from './start.ts'
 declare module '@tanstack/react-start' {
   interface Register {
     ssr: true
     router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
   }
 }

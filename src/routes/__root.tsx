@@ -6,6 +6,8 @@ import type { QueryClient } from '@tanstack/react-query'
 
 import type { TRPCRouter } from '#/integrations/trpc/router'
 import type { TRPCOptionsProxy } from '@trpc/tanstack-react-query'
+import { Toaster } from '#/components/ui/sonner'
+import NotFound from '#/components/shared/not-found'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -35,6 +37,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
   }),
   shellComponent: RootDocument,
+  notFoundComponent: NotFound,
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
@@ -46,6 +49,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body>
         {children}
 
+        <Toaster />
         <Scripts />
       </body>
     </html>

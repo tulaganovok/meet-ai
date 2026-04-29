@@ -10,7 +10,7 @@ import { TRPCProvider } from '#/integrations/trpc/react'
 function getUrl() {
   const base = (() => {
     if (typeof window !== 'undefined') return ''
-    return `http://localhost:${process.env.PORT ?? 3000}`
+    return process.env.BASE_APP_URL || 'http://localhost:3000'
   })()
   return `${base}/api/trpc`
 }

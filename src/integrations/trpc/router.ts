@@ -12,16 +12,15 @@ const todos = [
 
 const todosRouter = {
   list: publicProcedure.query(() => todos),
-  add: publicProcedure
-    .input(z.object({ name: z.string() }))
-    .mutation(({ input }) => {
-      const newTodo = { id: todos.length + 1, name: input.name }
-      todos.push(newTodo)
-      return newTodo
-    }),
+  add: publicProcedure.input(z.object({ name: z.string() })).mutation(({ input }) => {
+    const newTodo = { id: todos.length + 1, name: input.name }
+    todos.push(newTodo)
+    return newTodo
+  }),
 } satisfies TRPCRouterRecord
 
 export const trpcRouter = createTRPCRouter({
   todos: todosRouter,
 })
+
 export type TRPCRouter = typeof trpcRouter

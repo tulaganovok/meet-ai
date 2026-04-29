@@ -1,22 +1,21 @@
-import { Button } from '#/components/ui/button'
-import { authClient } from '#/lib/auth-client'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { SidebarProvider } from '#/components/ui/sidebar'
+import { getSessionFn } from '#/features/auth/functions/session'
+import DashboardSidebar from '#/features/dashboard/components/dashboard-sidebar'
+import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/dashboard')({
   component: RouteComponent,
+  loader: () => getSessionFn(),
 })
 
 function RouteComponent() {
-  const navigate = useNavigate()
-
   return (
-    <Button
-      onClick={async () => {
-        await authClient.signOut()
-        navigate({ to: '/sign-in' })
-      }}
-    >
-      Click me
-    </Button>
+    <SidebarProvider>
+      <DashboardSidebar />
+
+      <main className='flex flex-col w-screen h-screen bg-muted'>
+        <Outlet />
+      </main>
+    </SidebarProvider>
   )
 }

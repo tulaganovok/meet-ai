@@ -13,6 +13,10 @@ import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as marketingRouteRouteImport } from './routes/(marketing)/route'
 import { Route as authRouteRouteImport } from './routes/(auth)/route'
 import { Route as marketingIndexRouteImport } from './routes/(marketing)/index'
+import { Route as DashboardUpgradeIndexRouteImport } from './routes/dashboard/upgrade/index'
+import { Route as DashboardMeetingsIndexRouteImport } from './routes/dashboard/meetings/index'
+import { Route as DashboardAgentsIndexRouteImport } from './routes/dashboard/agents/index'
+import { Route as DashboardoverviewIndexRouteImport } from './routes/dashboard/(overview)/index'
 import { Route as authSignUpIndexRouteImport } from './routes/(auth)/sign-up/index'
 import { Route as authSignInIndexRouteImport } from './routes/(auth)/sign-in/index'
 import { Route as ApiTrpcSplatRouteImport } from './routes/api.trpc.$'
@@ -36,6 +40,26 @@ const marketingIndexRoute = marketingIndexRouteImport.update({
   path: '/',
   getParentRoute: () => marketingRouteRoute,
 } as any)
+const DashboardUpgradeIndexRoute = DashboardUpgradeIndexRouteImport.update({
+  id: '/upgrade/',
+  path: '/upgrade/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardMeetingsIndexRoute = DashboardMeetingsIndexRouteImport.update({
+  id: '/meetings/',
+  path: '/meetings/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardAgentsIndexRoute = DashboardAgentsIndexRouteImport.update({
+  id: '/agents/',
+  path: '/agents/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardoverviewIndexRoute = DashboardoverviewIndexRouteImport.update({
+  id: '/(overview)/',
+  path: '/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
 const authSignUpIndexRoute = authSignUpIndexRouteImport.update({
   id: '/sign-up/',
   path: '/sign-up/',
@@ -58,31 +82,42 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/dashboard': typeof DashboardRouteRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/': typeof marketingIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
   '/sign-in/': typeof authSignInIndexRoute
   '/sign-up/': typeof authSignUpIndexRoute
+  '/dashboard/': typeof DashboardoverviewIndexRoute
+  '/dashboard/agents/': typeof DashboardAgentsIndexRoute
+  '/dashboard/meetings/': typeof DashboardMeetingsIndexRoute
+  '/dashboard/upgrade/': typeof DashboardUpgradeIndexRoute
 }
 export interface FileRoutesByTo {
-  '/dashboard': typeof DashboardRouteRoute
   '/': typeof marketingIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
   '/sign-in': typeof authSignInIndexRoute
   '/sign-up': typeof authSignUpIndexRoute
+  '/dashboard': typeof DashboardoverviewIndexRoute
+  '/dashboard/agents': typeof DashboardAgentsIndexRoute
+  '/dashboard/meetings': typeof DashboardMeetingsIndexRoute
+  '/dashboard/upgrade': typeof DashboardUpgradeIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(auth)': typeof authRouteRouteWithChildren
   '/(marketing)': typeof marketingRouteRouteWithChildren
-  '/dashboard': typeof DashboardRouteRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/(marketing)/': typeof marketingIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
   '/(auth)/sign-in/': typeof authSignInIndexRoute
   '/(auth)/sign-up/': typeof authSignUpIndexRoute
+  '/dashboard/(overview)/': typeof DashboardoverviewIndexRoute
+  '/dashboard/agents/': typeof DashboardAgentsIndexRoute
+  '/dashboard/meetings/': typeof DashboardMeetingsIndexRoute
+  '/dashboard/upgrade/': typeof DashboardUpgradeIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -93,14 +128,21 @@ export interface FileRouteTypes {
     | '/api/trpc/$'
     | '/sign-in/'
     | '/sign-up/'
+    | '/dashboard/'
+    | '/dashboard/agents/'
+    | '/dashboard/meetings/'
+    | '/dashboard/upgrade/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/dashboard'
     | '/'
     | '/api/auth/$'
     | '/api/trpc/$'
     | '/sign-in'
     | '/sign-up'
+    | '/dashboard'
+    | '/dashboard/agents'
+    | '/dashboard/meetings'
+    | '/dashboard/upgrade'
   id:
     | '__root__'
     | '/(auth)'
@@ -111,12 +153,16 @@ export interface FileRouteTypes {
     | '/api/trpc/$'
     | '/(auth)/sign-in/'
     | '/(auth)/sign-up/'
+    | '/dashboard/(overview)/'
+    | '/dashboard/agents/'
+    | '/dashboard/meetings/'
+    | '/dashboard/upgrade/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   authRouteRoute: typeof authRouteRouteWithChildren
   marketingRouteRoute: typeof marketingRouteRouteWithChildren
-  DashboardRouteRoute: typeof DashboardRouteRoute
+  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiTrpcSplatRoute: typeof ApiTrpcSplatRoute
 }
@@ -150,6 +196,34 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof marketingIndexRouteImport
       parentRoute: typeof marketingRouteRoute
+    }
+    '/dashboard/upgrade/': {
+      id: '/dashboard/upgrade/'
+      path: '/upgrade'
+      fullPath: '/dashboard/upgrade/'
+      preLoaderRoute: typeof DashboardUpgradeIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/meetings/': {
+      id: '/dashboard/meetings/'
+      path: '/meetings'
+      fullPath: '/dashboard/meetings/'
+      preLoaderRoute: typeof DashboardMeetingsIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/agents/': {
+      id: '/dashboard/agents/'
+      path: '/agents'
+      fullPath: '/dashboard/agents/'
+      preLoaderRoute: typeof DashboardAgentsIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/(overview)/': {
+      id: '/dashboard/(overview)/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardoverviewIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
     }
     '/(auth)/sign-up/': {
       id: '/(auth)/sign-up/'
@@ -208,10 +282,28 @@ const marketingRouteRouteWithChildren = marketingRouteRoute._addFileChildren(
   marketingRouteRouteChildren,
 )
 
+interface DashboardRouteRouteChildren {
+  DashboardoverviewIndexRoute: typeof DashboardoverviewIndexRoute
+  DashboardAgentsIndexRoute: typeof DashboardAgentsIndexRoute
+  DashboardMeetingsIndexRoute: typeof DashboardMeetingsIndexRoute
+  DashboardUpgradeIndexRoute: typeof DashboardUpgradeIndexRoute
+}
+
+const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardoverviewIndexRoute: DashboardoverviewIndexRoute,
+  DashboardAgentsIndexRoute: DashboardAgentsIndexRoute,
+  DashboardMeetingsIndexRoute: DashboardMeetingsIndexRoute,
+  DashboardUpgradeIndexRoute: DashboardUpgradeIndexRoute,
+}
+
+const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
+  DashboardRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   authRouteRoute: authRouteRouteWithChildren,
   marketingRouteRoute: marketingRouteRouteWithChildren,
-  DashboardRouteRoute: DashboardRouteRoute,
+  DashboardRouteRoute: DashboardRouteRouteWithChildren,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiTrpcSplatRoute: ApiTrpcSplatRoute,
 }

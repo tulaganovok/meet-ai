@@ -1,8 +1,10 @@
 import { z } from 'zod'
 
-import { createTRPCRouter, publicProcedure } from './init'
+import { createTRPCRouter, protectedProcedure, publicProcedure } from './init'
 
-import type { TRPCRouterRecord } from '@trpc/server'
+import type { inferRouterOutputs, TRPCRouterRecord } from '@trpc/server'
+import { createAgentFn, getAllAgentsFn, getOneAgentFn } from '#/features/agents/utils/function'
+import { agentsGetOneSchema, agentsInsertSchema } from '#/features/agents/utils/schema'
 
 const todos = [
   { id: 1, name: 'Get groceries' },
@@ -19,8 +21,20 @@ const todosRouter = {
   }),
 } satisfies TRPCRouterRecord
 
+const agentsRouter = {
+  getAll: protectedProcedure.query(() => getAllAgentsFn()),
+  getOne: protectedProcedure
+    .input(agentsGetOneSchema)
+    .query(({ input }) => getOneAgentFn({ data: input })),
+  create: protectedProcedure
+    .input(agentsInsertSchema)
+    .mutation(({ input }) => createAgentFn({ data: input })),
+} satisfies TRPCRouterRecord
+
 export const trpcRouter = createTRPCRouter({
   todos: todosRouter,
+  agents: agentsRouter,
 })
 
 export type TRPCRouter = typeof trpcRouter
+export type AgentGetOne = inferRouterOutputs<TRPCRouter>['agents']['getOne']

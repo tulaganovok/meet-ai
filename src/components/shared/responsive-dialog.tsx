@@ -36,12 +36,12 @@ export default function ResponsiveDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
+      <DialogContent className='min-w-lg'>
+        <DialogHeader className='gap-1'>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        
+
         {children}
       </DialogContent>
     </Dialog>

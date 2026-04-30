@@ -1,5 +1,5 @@
 import { SidebarProvider } from '#/components/ui/sidebar'
-import { getSessionFn } from '#/features/auth/functions/session'
+import { getSessionFn } from '#/features/auth/utils/function'
 import DashboardNavbar from '#/features/dashboard/components/dashboard-navbar'
 import DashboardSidebar from '#/features/dashboard/components/dashboard-sidebar'
 import { createFileRoute, Outlet } from '@tanstack/react-router'

@@ -1,13 +1,13 @@
 import { Button } from '#/components/ui/button'
 import { useNavigate } from '@tanstack/react-router'
 import { useForm, useStore } from '@tanstack/react-form'
-import { signInFormSchema } from '../schemas/sign-in.schema'
 import { Field, FieldError, FieldGroup, FieldLabel } from '#/components/ui/field'
 import { Input } from '#/components/ui/input'
 import { authClient } from '#/lib/auth-client'
 import { useState } from 'react'
 import { Alert, AlertTitle } from '#/components/ui/alert'
 import { AlertCircleIcon } from 'lucide-react'
+import { signInFormSchema } from '../utils/schema'
 
 export default function SignInForm() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)

@@ -4,10 +4,10 @@ import { useForm, useStore } from '@tanstack/react-form'
 import { Field, FieldError, FieldGroup, FieldLabel } from '#/components/ui/field'
 import { Input } from '#/components/ui/input'
 import { authClient } from '#/lib/auth-client'
-import { signUpFormSchema } from '../schemas/sign-up.schema'
 import { Alert, AlertTitle } from '#/components/ui/alert'
 import { AlertCircleIcon } from 'lucide-react'
 import { useState } from 'react'
+import { signUpFormSchema } from '../utils/schema'
 
 export default function SignUpForm() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)

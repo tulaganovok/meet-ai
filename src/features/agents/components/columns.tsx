@@ -28,7 +28,7 @@ export const columns: ColumnDef<AgentGetOne>[] = [
   {
     accessorKey: 'meetingsCount',
     header: 'Meetings',
-    cell: () => (
+    cell: ({}) => (
       <Badge variant={'outline'} className='flex items-center gap-x-2 text-sm'>
         <VideoIcon className='text-blue-700' />
         {(Math.random() * 10).toFixed(0)} meetings

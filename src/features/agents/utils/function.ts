@@ -2,14 +2,41 @@ import { db } from '#/db/index'
 import { agents } from '#/db/schema'
 import { authFnMiddleware } from '#/middleware/auth'
 import { createServerFn } from '@tanstack/react-start'
-import { agentsGetOneSchema, agentsInsertSchema } from './schema'
-import { eq } from 'drizzle-orm'
+import { agentsGetManySchema, agentsGetOneSchema, agentsInsertSchema } from './schema'
+import { and, count, desc, eq, ilike } from 'drizzle-orm'
 
-export const getAllAgentsFn = createServerFn({ method: 'GET' })
+export const getManyAgentsFn = createServerFn({ method: 'GET' })
   .middleware([authFnMiddleware])
-  .handler(async () => {
-    const allAgents = await db.select().from(agents)
-    return allAgents
+  .inputValidator(agentsGetManySchema)
+  .handler(async ({ data, context }) => {
+    const { search, page, pageSize } = data
+
+    const filteredAgents = await db
+      .select()
+      .from(agents)
+      .where(
+        and(
+          eq(agents.userId, context.session.user.id),
+          search ? ilike(agents.name, `%${search}%`) : undefined,
+        ),
+      )
+      .orderBy(desc(agents.createdAt), desc(agents.id))
+      .limit(pageSize)
+      .offset((page - 1) * pageSize)
+
+    const [totalAgents] = await db
+      .select({ count: count() })
+      .from(agents)
+      .where(
+        and(
+          eq(agents.userId, context.session.user.id),
+          search ? ilike(agents.name, `%${search}%`) : undefined,
+        ),
+      )
+
+    const totalAgentsPages = Math.ceil(totalAgents.count / pageSize)
+
+    return { agents: filteredAgents, total: totalAgents.count, totalPages: totalAgentsPages }
   })
 
 export const getOneAgentFn = createServerFn({ method: 'GET' })

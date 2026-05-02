@@ -3,8 +3,12 @@ import { z } from 'zod'
 import { createTRPCRouter, protectedProcedure, publicProcedure } from './init'
 
 import type { inferRouterOutputs, TRPCRouterRecord } from '@trpc/server'
-import { createAgentFn, getAllAgentsFn, getOneAgentFn } from '#/features/agents/utils/function'
-import { agentsGetOneSchema, agentsInsertSchema } from '#/features/agents/utils/schema'
+import { createAgentFn, getManyAgentsFn, getOneAgentFn } from '#/features/agents/utils/function'
+import {
+  agentsGetManySchema,
+  agentsGetOneSchema,
+  agentsInsertSchema,
+} from '#/features/agents/utils/schema'
 
 const todos = [
   { id: 1, name: 'Get groceries' },
@@ -22,7 +26,9 @@ const todosRouter = {
 } satisfies TRPCRouterRecord
 
 const agentsRouter = {
-  getAll: protectedProcedure.query(() => getAllAgentsFn()),
+  getMany: protectedProcedure
+    .input(agentsGetManySchema)
+    .query(({ input }) => getManyAgentsFn({ data: input })),
   getOne: protectedProcedure
     .input(agentsGetOneSchema)
     .query(({ input }) => getOneAgentFn({ data: input })),

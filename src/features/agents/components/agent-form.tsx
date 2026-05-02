@@ -24,7 +24,7 @@ export default function AgentForm({ initialValues, onSuccess, onCancel }: AgentF
   const createAgentMutation = useMutation(
     trpc.agents.create.mutationOptions({
       onSuccess: async () => {
-        await queryClient.invalidateQueries(trpc.agents.getAll.queryOptions())
+        await queryClient.invalidateQueries(trpc.agents.getMany.queryOptions({}))
 
         if (isEditing) {
           await queryClient.invalidateQueries(

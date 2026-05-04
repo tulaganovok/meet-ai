@@ -12,11 +12,11 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { zodValidator } from '@tanstack/zod-adapter'
 
 export const Route = createFileRoute('/dashboard/agents/')({
-  component: RouteComponent,
+  component: AgentsPage,
   validateSearch: zodValidator(agentsSearchSchema),
 })
 
-function RouteComponent() {
+function AgentsPage() {
   const searchParams = Route.useSearch()
   const { agents } = useTRPC()
   const { data, isLoading, isError } = useQuery(agents.getMany.queryOptions(searchParams))
@@ -35,7 +35,13 @@ function RouteComponent() {
       {data && (
         <div className='flex-1 pb-4 flex flex-col gap-y-12'>
           <div>
-            <DataTable columns={columns} data={data.agents} />
+            <DataTable
+              columns={columns}
+              data={data.agents}
+              onRowClick={row =>
+                navigate({ to: '/dashboard/agents/$agentId', params: { agentId: row.id } })
+              }
+            />
 
             {data.agents.length > 0 && (
               <Pagination

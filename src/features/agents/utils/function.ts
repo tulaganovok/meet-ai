@@ -4,6 +4,7 @@ import { authFnMiddleware } from '#/middleware/auth'
 import { createServerFn } from '@tanstack/react-start'
 import { agentsGetManySchema, agentsGetOneSchema, agentsInsertSchema } from './schema'
 import { and, count, desc, eq, ilike } from 'drizzle-orm'
+import { TRPCError } from '@trpc/server'
 
 export const getManyAgentsFn = createServerFn({ method: 'GET' })
   .middleware([authFnMiddleware])
@@ -42,8 +43,14 @@ export const getManyAgentsFn = createServerFn({ method: 'GET' })
 export const getOneAgentFn = createServerFn({ method: 'GET' })
   .middleware([authFnMiddleware])
   .inputValidator(agentsGetOneSchema)
-  .handler(async ({ data }) => {
-    const [agent] = await db.select().from(agents).where(eq(agents.id, data.id))
+  .handler(async ({ data, context }) => {
+    const [agent] = await db
+      .select()
+      .from(agents)
+      .where(and(eq(agents.id, data.id), eq(agents.userId, context.session.user.id)))
+
+    if (!agent) throw new TRPCError({ code: 'NOT_FOUND', message: 'Agent not found' })
+
     return agent
   })
 

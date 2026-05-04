@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/(marketing)')({
-  component: RouteComponent,
+  component: MarketingLayout,
 })
 
-function RouteComponent() {
+function MarketingLayout() {
   return <div>Hello "/(marketing)"!</div>
 }

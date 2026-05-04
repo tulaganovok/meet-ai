@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/dashboard/upgrade/')({
-  component: RouteComponent,
+  component: UpgradePage,
 })
 
-function RouteComponent() {
+function UpgradePage() {
   return <div>Hello "/dashboard/upgrade/"!</div>
 }

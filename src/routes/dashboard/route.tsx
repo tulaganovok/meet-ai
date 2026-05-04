@@ -5,11 +5,12 @@ import DashboardSidebar from '#/features/dashboard/components/dashboard-sidebar'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/dashboard')({
-  component: RouteComponent,
+  component: DashboardLayout,
   loader: () => getSessionFn(),
+  head: () => ({ meta: [{ title: 'Dashboard | Meet AI' }] }),
 })
 
-function RouteComponent() {
+function DashboardLayout() {
   return (
     <SidebarProvider>
       <DashboardSidebar />

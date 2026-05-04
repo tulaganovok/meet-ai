@@ -3,7 +3,12 @@ import { trpcRouter } from '#/integrations/trpc/router'
 import { createFileRoute } from '@tanstack/react-router'
 
 function handler({ request }: { request: Request }) {
-  return fetchRequestHandler({ req: request, router: trpcRouter, endpoint: '/api/trpc' })
+  return fetchRequestHandler({
+    req: request,
+    router: trpcRouter,
+    endpoint: '/api/trpc',
+    createContext: () => ({ headers: request.headers }),
+  })
 }
 
 export const Route = createFileRoute('/api/trpc/$')({

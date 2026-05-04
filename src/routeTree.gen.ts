@@ -21,6 +21,7 @@ import { Route as authSignUpIndexRouteImport } from './routes/(auth)/sign-up/ind
 import { Route as authSignInIndexRouteImport } from './routes/(auth)/sign-in/index'
 import { Route as ApiTrpcSplatRouteImport } from './routes/api/trpc/$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as DashboardAgentsAgentIdIndexRouteImport } from './routes/dashboard/agents/$agentId/index'
 
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
   id: '/dashboard',
@@ -80,6 +81,12 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardAgentsAgentIdIndexRoute =
+  DashboardAgentsAgentIdIndexRouteImport.update({
+    id: '/agents/$agentId/',
+    path: '/agents/$agentId/',
+    getParentRoute: () => DashboardRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRouteRouteWithChildren
@@ -92,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/agents/': typeof DashboardAgentsIndexRoute
   '/dashboard/meetings/': typeof DashboardMeetingsIndexRoute
   '/dashboard/upgrade/': typeof DashboardUpgradeIndexRoute
+  '/dashboard/agents/$agentId/': typeof DashboardAgentsAgentIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof marketingIndexRoute
@@ -103,6 +111,7 @@ export interface FileRoutesByTo {
   '/dashboard/agents': typeof DashboardAgentsIndexRoute
   '/dashboard/meetings': typeof DashboardMeetingsIndexRoute
   '/dashboard/upgrade': typeof DashboardUpgradeIndexRoute
+  '/dashboard/agents/$agentId': typeof DashboardAgentsAgentIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -118,6 +127,7 @@ export interface FileRoutesById {
   '/dashboard/agents/': typeof DashboardAgentsIndexRoute
   '/dashboard/meetings/': typeof DashboardMeetingsIndexRoute
   '/dashboard/upgrade/': typeof DashboardUpgradeIndexRoute
+  '/dashboard/agents/$agentId/': typeof DashboardAgentsAgentIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -132,6 +142,7 @@ export interface FileRouteTypes {
     | '/dashboard/agents/'
     | '/dashboard/meetings/'
     | '/dashboard/upgrade/'
+    | '/dashboard/agents/$agentId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -143,6 +154,7 @@ export interface FileRouteTypes {
     | '/dashboard/agents'
     | '/dashboard/meetings'
     | '/dashboard/upgrade'
+    | '/dashboard/agents/$agentId'
   id:
     | '__root__'
     | '/(auth)'
@@ -157,6 +169,7 @@ export interface FileRouteTypes {
     | '/dashboard/agents/'
     | '/dashboard/meetings/'
     | '/dashboard/upgrade/'
+    | '/dashboard/agents/$agentId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -253,6 +266,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/agents/$agentId/': {
+      id: '/dashboard/agents/$agentId/'
+      path: '/agents/$agentId'
+      fullPath: '/dashboard/agents/$agentId/'
+      preLoaderRoute: typeof DashboardAgentsAgentIdIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
   }
 }
 
@@ -287,6 +307,7 @@ interface DashboardRouteRouteChildren {
   DashboardAgentsIndexRoute: typeof DashboardAgentsIndexRoute
   DashboardMeetingsIndexRoute: typeof DashboardMeetingsIndexRoute
   DashboardUpgradeIndexRoute: typeof DashboardUpgradeIndexRoute
+  DashboardAgentsAgentIdIndexRoute: typeof DashboardAgentsAgentIdIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
@@ -294,6 +315,7 @@ const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardAgentsIndexRoute: DashboardAgentsIndexRoute,
   DashboardMeetingsIndexRoute: DashboardMeetingsIndexRoute,
   DashboardUpgradeIndexRoute: DashboardUpgradeIndexRoute,
+  DashboardAgentsAgentIdIndexRoute: DashboardAgentsAgentIdIndexRoute,
 }
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(

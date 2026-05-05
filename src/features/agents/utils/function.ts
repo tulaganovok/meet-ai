@@ -2,7 +2,13 @@ import { db } from '#/db/index'
 import { agents } from '#/db/schema'
 import { authFnMiddleware } from '#/middleware/auth'
 import { createServerFn } from '@tanstack/react-start'
-import { agentsGetManySchema, agentsGetOneSchema, agentsInsertSchema } from './schema'
+import {
+  agentsDeleteSchema,
+  agentsGetManySchema,
+  agentsGetOneSchema,
+  agentsInsertSchema,
+  agentsUpdateSchema,
+} from './schema'
 import { and, count, desc, eq, ilike } from 'drizzle-orm'
 import { TRPCError } from '@trpc/server'
 
@@ -64,4 +70,35 @@ export const createAgentFn = createServerFn({ method: 'POST' })
       .returning()
 
     return newAgent
+  })
+
+export const updateAgentFn = createServerFn({ method: 'POST' })
+  .middleware([authFnMiddleware])
+  .inputValidator(agentsUpdateSchema)
+  .handler(async ({ data, context }) => {
+    const { id, ...values } = data
+
+    const [updatedAgent] = await db
+      .update(agents)
+      .set(values)
+      .where(and(eq(agents.id, id), eq(agents.userId, context.session.user.id)))
+      .returning()
+
+    if (!updatedAgent) throw new TRPCError({ code: 'NOT_FOUND', message: 'Agent not found' })
+
+    return updatedAgent
+  })
+
+export const deleteAgentFn = createServerFn({ method: 'POST' })
+  .middleware([authFnMiddleware])
+  .inputValidator(agentsDeleteSchema)
+  .handler(async ({ data, context }) => {
+    const [deletedAgent] = await db
+      .delete(agents)
+      .where(and(eq(agents.id, data.id), eq(agents.userId, context.session.user.id)))
+      .returning()
+
+    if (!deletedAgent) throw new TRPCError({ code: 'NOT_FOUND', message: 'Agent not found' })
+
+    return deletedAgent
   })

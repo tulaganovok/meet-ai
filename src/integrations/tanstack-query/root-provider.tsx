@@ -3,7 +3,6 @@ import { environmentManager, QueryClient } from '@tanstack/react-query'
 import superjson from 'superjson'
 import { createTRPCClient, httpBatchStreamLink } from '@trpc/client'
 import { createTRPCOptionsProxy } from '@trpc/tanstack-react-query'
-
 import type { TRPCRouter } from '#/integrations/trpc/router'
 import { TRPCProvider } from '#/integrations/trpc/react'
 import { getRequestHeaders } from '@tanstack/react-start/server'

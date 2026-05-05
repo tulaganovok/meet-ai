@@ -3,6 +3,10 @@ import { createServerFn } from '@tanstack/react-start'
 import { redirect } from '@tanstack/react-router'
 import { getRequestHeaders } from '@tanstack/react-start/server'
 
+export const getRequestHeadersFn = createServerFn({ method: 'GET' }).handler(() =>
+  getRequestHeaders(),
+)
+
 export const getSessionFn = createServerFn({ method: 'GET' }).handler(async () => {
   const headers = getRequestHeaders()
   const session = await auth.api.getSession({ headers })

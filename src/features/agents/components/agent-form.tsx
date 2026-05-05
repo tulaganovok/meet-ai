@@ -9,6 +9,7 @@ import { Button } from '#/components/ui/button'
 import GeneratedAvatar from '#/components/shared/generated-avatar'
 import { Textarea } from '#/components/ui/textarea'
 import { toast } from 'sonner'
+import { useRouter } from '@tanstack/react-router'
 
 interface AgentFormProps {
   initialValues?: AgentGetOne
@@ -18,6 +19,7 @@ interface AgentFormProps {
 export default function AgentForm({ initialValues, onSuccess, onCancel }: AgentFormProps) {
   const queryClient = useQueryClient()
   const trpc = useTRPC()
+  const router = useRouter()
 
   const isEditing = !!initialValues?.id
 
@@ -25,13 +27,6 @@ export default function AgentForm({ initialValues, onSuccess, onCancel }: AgentF
     trpc.agents.create.mutationOptions({
       onSuccess: async () => {
         await queryClient.invalidateQueries(trpc.agents.getMany.queryOptions({}))
-
-        if (isEditing) {
-          await queryClient.invalidateQueries(
-            trpc.agents.getOne.queryOptions({ id: initialValues.id }),
-          )
-        }
-
         onSuccess?.()
       },
       onError: ({ message }) => {
@@ -40,7 +35,27 @@ export default function AgentForm({ initialValues, onSuccess, onCancel }: AgentF
     }),
   )
 
-  const isAgentFormSubmitting = createAgentMutation.isPending
+  const updateAgentMutation = useMutation(
+    trpc.agents.update.mutationOptions({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(trpc.agents.getMany.queryOptions({}))
+
+        if (isEditing) {
+          await queryClient.invalidateQueries(
+            trpc.agents.getOne.queryOptions({ id: initialValues?.id }),
+          )
+        }
+
+        await router.invalidate()
+        onSuccess?.()
+      },
+      onError: ({ message }) => {
+        toast.error(message)
+      },
+    }),
+  )
+
+  const isAgentFormSubmitting = createAgentMutation.isPending || updateAgentMutation.isPending
 
   const agentForm = useForm({
     defaultValues: {
@@ -50,7 +65,7 @@ export default function AgentForm({ initialValues, onSuccess, onCancel }: AgentF
     validators: { onSubmit: agentsInsertSchema },
     onSubmit: ({ value }) => {
       if (isEditing) {
-        console.log(value)
+        updateAgentMutation.mutate({ ...value, id: initialValues.id })
       } else {
         createAgentMutation.mutate(value)
       }

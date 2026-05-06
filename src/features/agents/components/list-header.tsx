@@ -14,7 +14,7 @@ export default function ListHeader() {
           <h5 className='font-medium text-xl'>My Agents</h5>
 
           <Button onClick={() => setIsNewAgentDialogOpen(true)}>
-            <Plus /> Create
+            <Plus /> New agent
           </Button>
         </div>
 

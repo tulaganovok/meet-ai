@@ -70,12 +70,12 @@ export const createMeetingFn = createServerFn({ method: 'POST' })
   .handler(async ({ data, context }) => {
     console.log(data, context)
 
-    // const [newMeeting] = await db
-    //   .insert(meetings)
-    //   .values({ ...data, userId: context.session.user.id })
-    //   .returning()
+    const [newMeeting] = await db
+      .insert(meetings)
+      .values({ ...data, userId: context.session.user.id })
+      .returning()
 
-    // return newMeeting
+    return newMeeting
   })
 
 export const updateMeetingFn = createServerFn({ method: 'POST' })

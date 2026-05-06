@@ -10,3 +10,4 @@ export const trpcRouter = createTRPCRouter({
 
 export type TRPCRouter = typeof trpcRouter
 export type AgentGetOne = inferRouterOutputs<TRPCRouter>['agents']['getOne']
+export type MeetingGetOne = inferRouterOutputs<TRPCRouter>['meetings']['getOne']

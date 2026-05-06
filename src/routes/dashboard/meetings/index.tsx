@@ -1,6 +1,7 @@
 import EmptyState from '#/components/shared/empty-state'
 import ErrorState from '#/components/shared/error-state'
 import LoadingState from '#/components/shared/loading-state'
+import ListHeader from '#/features/meetings/components/list-header'
 import { useTRPC } from '#/integrations/trpc/react'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
@@ -16,13 +17,14 @@ function MeetingsPage() {
 
   return (
     <div className='px-4 md:px-8'>
-      {/* <ListHeader /> */}
-      Meetings Header
+      <ListHeader />
+
       {isLoading && (
         <div className='flex py-32 justify-center'>
           <LoadingState title='Loading meetings...' description='This will take a few seconds.' />
         </div>
       )}
+
       {data && (
         <div className='flex-1 pb-4 flex flex-col gap-y-12'>
           <div>

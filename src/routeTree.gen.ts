@@ -21,6 +21,7 @@ import { Route as authSignUpIndexRouteImport } from './routes/(auth)/sign-up/ind
 import { Route as authSignInIndexRouteImport } from './routes/(auth)/sign-in/index'
 import { Route as ApiTrpcSplatRouteImport } from './routes/api/trpc/$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as DashboardMeetingsMeetingIdIndexRouteImport } from './routes/dashboard/meetings/$meetingId/index'
 import { Route as DashboardAgentsAgentIdIndexRouteImport } from './routes/dashboard/agents/$agentId/index'
 
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
@@ -81,6 +82,12 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardMeetingsMeetingIdIndexRoute =
+  DashboardMeetingsMeetingIdIndexRouteImport.update({
+    id: '/meetings/$meetingId/',
+    path: '/meetings/$meetingId/',
+    getParentRoute: () => DashboardRouteRoute,
+  } as any)
 const DashboardAgentsAgentIdIndexRoute =
   DashboardAgentsAgentIdIndexRouteImport.update({
     id: '/agents/$agentId/',
@@ -100,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/meetings/': typeof DashboardMeetingsIndexRoute
   '/dashboard/upgrade/': typeof DashboardUpgradeIndexRoute
   '/dashboard/agents/$agentId/': typeof DashboardAgentsAgentIdIndexRoute
+  '/dashboard/meetings/$meetingId/': typeof DashboardMeetingsMeetingIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof marketingIndexRoute
@@ -112,6 +120,7 @@ export interface FileRoutesByTo {
   '/dashboard/meetings': typeof DashboardMeetingsIndexRoute
   '/dashboard/upgrade': typeof DashboardUpgradeIndexRoute
   '/dashboard/agents/$agentId': typeof DashboardAgentsAgentIdIndexRoute
+  '/dashboard/meetings/$meetingId': typeof DashboardMeetingsMeetingIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -128,6 +137,7 @@ export interface FileRoutesById {
   '/dashboard/meetings/': typeof DashboardMeetingsIndexRoute
   '/dashboard/upgrade/': typeof DashboardUpgradeIndexRoute
   '/dashboard/agents/$agentId/': typeof DashboardAgentsAgentIdIndexRoute
+  '/dashboard/meetings/$meetingId/': typeof DashboardMeetingsMeetingIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -143,6 +153,7 @@ export interface FileRouteTypes {
     | '/dashboard/meetings/'
     | '/dashboard/upgrade/'
     | '/dashboard/agents/$agentId/'
+    | '/dashboard/meetings/$meetingId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -155,6 +166,7 @@ export interface FileRouteTypes {
     | '/dashboard/meetings'
     | '/dashboard/upgrade'
     | '/dashboard/agents/$agentId'
+    | '/dashboard/meetings/$meetingId'
   id:
     | '__root__'
     | '/(auth)'
@@ -170,6 +182,7 @@ export interface FileRouteTypes {
     | '/dashboard/meetings/'
     | '/dashboard/upgrade/'
     | '/dashboard/agents/$agentId/'
+    | '/dashboard/meetings/$meetingId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -266,6 +279,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/meetings/$meetingId/': {
+      id: '/dashboard/meetings/$meetingId/'
+      path: '/meetings/$meetingId'
+      fullPath: '/dashboard/meetings/$meetingId/'
+      preLoaderRoute: typeof DashboardMeetingsMeetingIdIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
     '/dashboard/agents/$agentId/': {
       id: '/dashboard/agents/$agentId/'
       path: '/agents/$agentId'
@@ -308,6 +328,7 @@ interface DashboardRouteRouteChildren {
   DashboardMeetingsIndexRoute: typeof DashboardMeetingsIndexRoute
   DashboardUpgradeIndexRoute: typeof DashboardUpgradeIndexRoute
   DashboardAgentsAgentIdIndexRoute: typeof DashboardAgentsAgentIdIndexRoute
+  DashboardMeetingsMeetingIdIndexRoute: typeof DashboardMeetingsMeetingIdIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
@@ -316,6 +337,7 @@ const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardMeetingsIndexRoute: DashboardMeetingsIndexRoute,
   DashboardUpgradeIndexRoute: DashboardUpgradeIndexRoute,
   DashboardAgentsAgentIdIndexRoute: DashboardAgentsAgentIdIndexRoute,
+  DashboardMeetingsMeetingIdIndexRoute: DashboardMeetingsMeetingIdIndexRoute,
 }
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(

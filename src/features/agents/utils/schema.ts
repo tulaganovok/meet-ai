@@ -21,10 +21,8 @@ export const agentsSearchSchema = z.object({
   page: z.number().optional(),
 })
 
-export const agentsUpdateSchema = z.object({
+export const agentsUpdateSchema = agentsInsertSchema.extend({
   id: z.string().min(1, 'ID is required'),
-  name: z.string().min(1, 'Name is required'),
-  instructions: z.string().min(1, 'Instructions are required'),
 })
 
 export const agentsDeleteSchema = z.object({

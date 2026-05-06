@@ -14,6 +14,7 @@ import { zodValidator } from '@tanstack/zod-adapter'
 export const Route = createFileRoute('/dashboard/agents/')({
   component: AgentsPage,
   validateSearch: zodValidator(agentsSearchSchema),
+  head: () => ({ meta: [{ title: 'Agents | Meet AI' }] }),
 })
 
 function AgentsPage() {

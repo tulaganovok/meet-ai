@@ -16,7 +16,7 @@ export const getManyMeetingsFn = createServerFn({ method: 'GET' })
   .middleware([authFnMiddleware])
   .inputValidator(meetingsGetManySchema)
   .handler(async ({ data, context }) => {
-    const { search, page, pageSize } = data
+    const { search, page, pageSize, agentId, status } = data
 
     const filteredMeetings = await db
       .select({
@@ -30,6 +30,8 @@ export const getManyMeetingsFn = createServerFn({ method: 'GET' })
         and(
           eq(meetings.userId, context.session.user.id),
           search ? ilike(meetings.name, `%${search}%`) : undefined,
+          agentId ? eq(meetings.agentId, agentId) : undefined,
+          status ? eq(meetings.status, status) : undefined,
         ),
       )
       .orderBy(desc(meetings.createdAt), desc(meetings.id))
@@ -44,6 +46,8 @@ export const getManyMeetingsFn = createServerFn({ method: 'GET' })
         and(
           eq(meetings.userId, context.session.user.id),
           search ? ilike(meetings.name, `%${search}%`) : undefined,
+          agentId ? eq(meetings.agentId, agentId) : undefined,
+          status ? eq(meetings.status, status) : undefined,
         ),
       )
 

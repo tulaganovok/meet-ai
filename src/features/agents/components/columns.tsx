@@ -13,7 +13,7 @@ export const columns: ColumnDef<AgentsGetMany[number]>[] = [
         <div className='flex items-center gap-x-2'>
           <GeneratedAvatar variant='botttsNeutral' seed={row.original.name} className='size-6' />
           
-          <span className='font-medium capitalize'>{row.original.name}</span>
+          <span className='font-medium capitalize text-base'>{row.original.name}</span>
         </div>
 
         <div className='flex items-center gap-x-1'>

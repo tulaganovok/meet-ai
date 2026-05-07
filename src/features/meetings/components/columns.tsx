@@ -40,7 +40,7 @@ export const columns: ColumnDef<MeetingsGetMany[number]>[] = [
     header: 'Meeting Name',
     cell: ({ row }) => (
       <div className='flex flex-col gap-y-1'>
-        <span className='font-semibold capitalize'>{row.original.name}</span>
+        <span className='font-medium text-base capitalize'>{row.original.name}</span>
 
         <div className='flex items-center gap-x-2'>
           <div className='flex items-center gap-x-1'>
@@ -65,6 +65,16 @@ export const columns: ColumnDef<MeetingsGetMany[number]>[] = [
     ),
   },
   {
+    accessorKey: 'duration',
+    header: 'duration',
+    cell: ({ row }) => (
+      <Badge variant='outline' className='capitalize [&>svg]:size-4 flex items-center gap-x-2'>
+        <ClockFadingIcon className='text-blue-700' />
+        {row.original.duration ? formatDuration(row.original.duration) : 'No duration'}
+      </Badge>
+    ),
+  },
+  {
     accessorKey: 'status',
     header: 'Status',
     cell: ({ row }) => {
@@ -83,15 +93,5 @@ export const columns: ColumnDef<MeetingsGetMany[number]>[] = [
         </Badge>
       )
     },
-  },
-  {
-    accessorKey: 'duration',
-    header: 'duration',
-    cell: ({ row }) => (
-      <Badge variant='outline' className='capitalize [&>svg]:size-4 flex items-center gap-x-2'>
-        <ClockFadingIcon className='text-blue-700' />
-        {row.original.duration ? formatDuration(row.original.duration) : 'No duration'}
-      </Badge>
-    ),
   },
 ]

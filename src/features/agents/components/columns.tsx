@@ -1,10 +1,10 @@
 import GeneratedAvatar from '#/components/shared/generated-avatar'
 import { Badge } from '#/components/ui/badge'
-import type { AgentGetOne } from '#/integrations/trpc/router'
+import type { AgentsGetMany } from '#/integrations/trpc/router'
 import type { ColumnDef } from '@tanstack/react-table'
 import { CornerDownRightIcon, VideoIcon } from 'lucide-react'
 
-export const columns: ColumnDef<AgentGetOne>[] = [
+export const columns: ColumnDef<AgentsGetMany[number]>[] = [
   {
     accessorKey: 'name',
     header: 'Agent Name',
@@ -12,6 +12,7 @@ export const columns: ColumnDef<AgentGetOne>[] = [
       <div className='flex flex-col gap-y-1'>
         <div className='flex items-center gap-x-2'>
           <GeneratedAvatar variant='botttsNeutral' seed={row.original.name} className='size-6' />
+          
           <span className='font-medium capitalize'>{row.original.name}</span>
         </div>
 

@@ -1,8 +1,8 @@
+import { DataTable } from '#/components/shared/data-table'
 import EmptyState from '#/components/shared/empty-state'
 import ErrorState from '#/components/shared/error-state'
 import LoadingState from '#/components/shared/loading-state'
 import { columns } from '#/features/agents/components/columns'
-import { DataTable } from '#/features/agents/components/data-table'
 import ListHeader from '#/features/agents/components/list-header'
 import Pagination from '#/features/agents/components/pagination'
 import { agentsSearchSchema } from '#/features/agents/utils/schema'
@@ -37,6 +37,7 @@ function AgentsPage() {
         <div className='flex-1 pb-4 flex flex-col gap-y-12'>
           <div>
             <DataTable
+              variant='agent'
               columns={columns}
               data={data.agents}
               onRowClick={row =>

@@ -1,5 +1,5 @@
 import { db } from '#/db/index'
-import { meetings } from '#/db/schema'
+import { agents, meetings } from '#/db/schema'
 import { authFnMiddleware } from '#/middleware/auth'
 import { createServerFn } from '@tanstack/react-start'
 import {
@@ -9,7 +9,7 @@ import {
   meetingsInsertSchema,
   meetingsUpdateSchema,
 } from './schema'
-import { and, count, desc, eq, ilike } from 'drizzle-orm'
+import { and, count, desc, eq, getTableColumns, ilike, sql } from 'drizzle-orm'
 import { TRPCError } from '@trpc/server'
 
 export const getManyMeetingsFn = createServerFn({ method: 'GET' })
@@ -19,8 +19,13 @@ export const getManyMeetingsFn = createServerFn({ method: 'GET' })
     const { search, page, pageSize } = data
 
     const filteredMeetings = await db
-      .select()
+      .select({
+        ...getTableColumns(meetings),
+        agent: agents,
+        duration: sql<number>`EXTRACT(EPOCH FROM (ended_at - started_at))`.as('duration'),
+      })
       .from(meetings)
+      .innerJoin(agents, eq(meetings.agentId, agents.id))
       .where(
         and(
           eq(meetings.userId, context.session.user.id),
@@ -34,6 +39,7 @@ export const getManyMeetingsFn = createServerFn({ method: 'GET' })
     const [totalMeetings] = await db
       .select({ count: count() })
       .from(meetings)
+      .innerJoin(agents, eq(meetings.agentId, agents.id))
       .where(
         and(
           eq(meetings.userId, context.session.user.id),

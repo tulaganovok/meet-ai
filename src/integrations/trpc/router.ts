@@ -9,5 +9,9 @@ export const trpcRouter = createTRPCRouter({
 })
 
 export type TRPCRouter = typeof trpcRouter
+
 export type AgentGetOne = inferRouterOutputs<TRPCRouter>['agents']['getOne']
+export type AgentsGetMany = inferRouterOutputs<TRPCRouter>['agents']['getMany']['agents']
+
 export type MeetingGetOne = inferRouterOutputs<TRPCRouter>['meetings']['getOne']
+export type MeetingsGetMany = inferRouterOutputs<TRPCRouter>['meetings']['getMany']['meetings']

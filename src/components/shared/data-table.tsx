@@ -2,12 +2,14 @@ import { type ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tan
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 
 interface DataTableProps<TData, TValue> {
+  variant: 'agent' | 'meeting'
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   onRowClick?: (row: TData) => void
 }
 
 export function DataTable<TData, TValue>({
+  variant,
   columns,
   data,
   onRowClick,
@@ -39,7 +41,7 @@ export function DataTable<TData, TValue>({
                 colSpan={columns.length}
                 className='h-19 text-center text-muted-foreground'
               >
-                No agents found.
+                No {variant === 'agent' ? 'agents' : 'meetings'} found.
               </TableCell>
             </TableRow>
           )}

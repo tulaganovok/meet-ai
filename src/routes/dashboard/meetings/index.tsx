@@ -1,10 +1,12 @@
+import { DataTable } from '#/components/shared/data-table'
 import EmptyState from '#/components/shared/empty-state'
 import ErrorState from '#/components/shared/error-state'
 import LoadingState from '#/components/shared/loading-state'
+import { columns } from '#/features/meetings/components/columns'
 import ListHeader from '#/features/meetings/components/list-header'
 import { useTRPC } from '#/integrations/trpc/react'
 import { useQuery } from '@tanstack/react-query'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/dashboard/meetings/')({
   component: MeetingsPage,
@@ -14,6 +16,7 @@ export const Route = createFileRoute('/dashboard/meetings/')({
 function MeetingsPage() {
   const { meetings } = useTRPC()
   const { data, isLoading, isError } = useQuery(meetings.getMany.queryOptions({}))
+  const navigate = useNavigate()
 
   return (
     <div className='px-4 md:px-8'>
@@ -28,15 +31,16 @@ function MeetingsPage() {
       {data && (
         <div className='flex-1 pb-4 flex flex-col gap-y-12'>
           <div>
-            {/* <DataTable
+            <DataTable
+              variant='meeting'
               columns={columns}
-              data={data.agents}
+              data={data.meetings}
               onRowClick={row =>
-                navigate({ to: '/dashboard/agents/$agentId', params: { agentId: row.id } })
+                navigate({ to: '/dashboard/meetings/$meetingId', params: { meetingId: row.id } })
               }
-            /> */}
-            {/* 
-            {data.agents.length > 0 && (
+            />
+
+            {/* {data.meetings.length > 0 && (
               <Pagination
                 page={searchParams.page ?? 1}
                 totalPages={data.totalPages}
@@ -58,6 +62,7 @@ function MeetingsPage() {
           )}
         </div>
       )}
+
       {isError && (
         <div className='flex justify-center py-32'>
           <ErrorState title='Failed to load meetings' description='Please try again later.' />

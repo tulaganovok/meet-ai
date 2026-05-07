@@ -2,20 +2,25 @@ import { DataTable } from '#/components/shared/data-table'
 import EmptyState from '#/components/shared/empty-state'
 import ErrorState from '#/components/shared/error-state'
 import LoadingState from '#/components/shared/loading-state'
+import Pagination from '#/components/shared/pagination'
 import { columns } from '#/features/meetings/components/columns'
 import ListHeader from '#/features/meetings/components/list-header'
+import { meetingsSearchSchema } from '#/features/meetings/utils/schema'
 import { useTRPC } from '#/integrations/trpc/react'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { zodValidator } from '@tanstack/zod-adapter'
 
 export const Route = createFileRoute('/dashboard/meetings/')({
   component: MeetingsPage,
   head: () => ({ meta: [{ title: 'Meetings | Meet AI' }] }),
+  validateSearch: zodValidator(meetingsSearchSchema),
 })
 
 function MeetingsPage() {
+  const searchParams = Route.useSearch()
   const { meetings } = useTRPC()
-  const { data, isLoading, isError } = useQuery(meetings.getMany.queryOptions({}))
+  const { data, isLoading, isError } = useQuery(meetings.getMany.queryOptions(searchParams))
   const navigate = useNavigate()
 
   return (
@@ -40,18 +45,18 @@ function MeetingsPage() {
               }
             />
 
-            {/* {data.meetings.length > 0 && (
+            {data.meetings.length > 0 && (
               <Pagination
                 page={searchParams.page ?? 1}
                 totalPages={data.totalPages}
                 onPageChange={newPage =>
                   navigate({
-                    to: '/dashboard/agents',
+                    to: '/dashboard/meetings',
                     search: { ...searchParams, page: newPage === 1 ? undefined : newPage },
                   })
                 }
               />
-            )} */}
+            )}
           </div>
 
           {data && data.meetings.length === 0 && (

@@ -1,5 +1,5 @@
 import { Input } from '#/components/ui/input'
-import { Route } from '#/routes/dashboard/agents'
+import { Route } from '#/routes/dashboard/meetings'
 import { useNavigate } from '@tanstack/react-router'
 import { SearchIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -17,7 +17,7 @@ export default function SearchFilter() {
       if (trimmed === (searchParams.search ?? '')) return
 
       navigate({
-        to: '/dashboard/agents',
+        to: '/dashboard/meetings',
         search: { ...searchParams, search: trimmed || undefined },
       })
     }, 500)

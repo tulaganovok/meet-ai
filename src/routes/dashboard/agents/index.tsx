@@ -2,9 +2,9 @@ import { DataTable } from '#/components/shared/data-table'
 import EmptyState from '#/components/shared/empty-state'
 import ErrorState from '#/components/shared/error-state'
 import LoadingState from '#/components/shared/loading-state'
+import Pagination from '#/components/shared/pagination'
 import { columns } from '#/features/agents/components/columns'
 import ListHeader from '#/features/agents/components/list-header'
-import Pagination from '#/features/agents/components/pagination'
 import { agentsSearchSchema } from '#/features/agents/utils/schema'
 import { useTRPC } from '#/integrations/trpc/react'
 import { useQuery } from '@tanstack/react-query'
@@ -25,7 +25,7 @@ function AgentsPage() {
 
   return (
     <div className='px-4 md:px-8'>
-      <ListHeader />
+       <ListHeader  />
 
       {isLoading && (
         <div className='flex py-32 justify-center'>

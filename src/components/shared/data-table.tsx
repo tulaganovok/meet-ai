@@ -29,7 +29,7 @@ export function DataTable<TData, TValue>({
                 className='cursor-pointer'
               >
                 {row.getVisibleCells().map(cell => (
-                  <TableCell key={cell.id} className='text-sm px-4 py-3'>
+                  <TableCell key={cell.id} className='text-sm px-4 py-2'>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}

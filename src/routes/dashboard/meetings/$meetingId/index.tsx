@@ -1,9 +1,73 @@
+import ErrorState from '#/components/shared/error-state'
+import LoadingState from '#/components/shared/loading-state'
+import DeleteMeetingDialog from '#/features/meetings/components/delete-meeting-dialog'
+import MeetingHeader from '#/features/meetings/components/meeting-header'
+import UpdateMeetingDialog from '#/features/meetings/components/update-meeting-dialog'
 import { createFileRoute } from '@tanstack/react-router'
+import { useEffect, useState } from 'react'
 
 export const Route = createFileRoute('/dashboard/meetings/$meetingId/')({
-  component: RouteComponent,
+  loader: ({ params: { meetingId }, context: { queryClient, trpc } }) =>
+    queryClient.fetchQuery(trpc.meetings.getOne.queryOptions({ id: meetingId })),
+  head: ({ loaderData: agent }) => ({ meta: [{ title: `${agent?.name} | Meet AI` }] }),
+  pendingMs: 0,
+  component: MeetingIdPage,
+  pendingComponent: PendingComponent,
+  errorComponent: ErrorComponent,
 })
 
-function RouteComponent() {
-  return <div>Hello "/dashboard/meetings/$meetingId/"!</div>
+function MeetingIdPage() {
+  const meeting = Route.useLoaderData()
+  const [updateMeetingDialogOpen, setUpdateMeetingDialogOpen] = useState(false)
+  const [deleteMeetingDialogOpen, setDeleteMeetingDialogOpen] = useState(false)
+
+  useEffect(() => {
+    if (meeting.name) {
+      document.title = `${meeting.name} | Meet AI`
+    }
+  }, [meeting.name])
+
+  return (
+    <>
+      <div className='flex-1 py-4 px-4 md:px-8 flex flex-col gap-y-4'>
+        <MeetingHeader
+          meetingId={meeting.id}
+          meetingName={meeting.name}
+          onEdit={() => setUpdateMeetingDialogOpen(true)}
+          onRemove={() => setDeleteMeetingDialogOpen(true)}
+        />
+      </div>
+
+      <UpdateMeetingDialog
+        initialValues={meeting}
+        open={updateMeetingDialogOpen}
+        onOpenChange={setUpdateMeetingDialogOpen}
+      />
+
+      <DeleteMeetingDialog
+        meetingId={meeting.id}
+        open={deleteMeetingDialogOpen}
+        onOpenChange={setDeleteMeetingDialogOpen}
+      />
+    </>
+  )
+}
+
+function PendingComponent() {
+  return (
+    <div className='h-screen w-full flex items-center justify-center'>
+      <LoadingState title='Loading meeting...' description='This will only take a few seconds.' />
+    </div>
+  )
+}
+
+function ErrorComponent() {
+  return (
+    <div className='h-screen w-full flex items-center justify-center'>
+      <ErrorState
+        title='Meeting not found'
+        description='The agent you are looking for does not exist.'
+      />
+    </div>
+  )
 }

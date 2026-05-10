@@ -65,8 +65,13 @@ export const getOneMeetingFn = createServerFn({ method: 'GET' })
   .inputValidator(meetingsGetOneSchema)
   .handler(async ({ data, context }) => {
     const [meeting] = await db
-      .select()
+      .select({
+        ...getTableColumns(meetings),
+        agent: agents,
+        duration: sql<number>`EXTRACT(EPOCH FROM (ended_at - started_at))`.as('duration'),
+      })
       .from(meetings)
+      .innerJoin(agents, eq(meetings.agentId, agents.id))
       .where(and(eq(meetings.id, data.id), eq(meetings.userId, context.session.user.id)))
 
     if (!meeting) throw new TRPCError({ code: 'NOT_FOUND', message: 'Meeting not found' })

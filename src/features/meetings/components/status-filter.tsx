@@ -1,4 +1,11 @@
-import { CircleXIcon, CircleCheckIcon, ClockArrowUpIcon, VideoIcon, LoaderIcon, MenuIcon } from 'lucide-react'
+import {
+  CircleXIcon,
+  CircleCheckIcon,
+  ClockArrowUpIcon,
+  VideoIcon,
+  LoaderIcon,
+  MenuIcon,
+} from 'lucide-react'
 import { MeetingStatus } from '../utils/schema'
 import {
   Select,

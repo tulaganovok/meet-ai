@@ -8,7 +8,6 @@ import { Input } from '#/components/ui/input'
 import { Button } from '#/components/ui/button'
 import { toast } from 'sonner'
 import { useNavigate, useRouter } from '@tanstack/react-router'
-import GeneratedAvatar from '#/components/shared/generated-avatar'
 import {
   Select,
   SelectContent,
@@ -17,8 +16,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '#/components/ui/select'
-import NewAgentDialog from '#/features/agents/components/new-agent-dialog'
 import { useState } from 'react'
+import { NewAgentDialog } from '#/features/agents/components/dialog'
+import { GeneratedAvatar } from '#/components/shared/avatar'
 
 interface MeetingFormProps {
   initialValues?: MeetingGetOne
@@ -26,7 +26,7 @@ interface MeetingFormProps {
   onCancel?: () => void
 }
 
-export default function MeetingForm({ initialValues, onSuccess, onCancel }: MeetingFormProps) {
+function MeetingForm({ initialValues, onSuccess, onCancel }: MeetingFormProps) {
   const queryClient = useQueryClient()
   const trpc = useTRPC()
   const router = useRouter()
@@ -214,3 +214,5 @@ export default function MeetingForm({ initialValues, onSuccess, onCancel }: Meet
     </>
   )
 }
+
+export { MeetingForm }

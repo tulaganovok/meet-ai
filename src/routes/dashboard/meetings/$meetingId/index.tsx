@@ -1,8 +1,13 @@
-import ErrorState from '#/components/shared/error-state'
-import LoadingState from '#/components/shared/loading-state'
-import DeleteMeetingDialog from '#/features/meetings/components/delete-meeting-dialog'
-import MeetingHeader from '#/features/meetings/components/meeting-header'
-import UpdateMeetingDialog from '#/features/meetings/components/update-meeting-dialog'
+import { ErrorState, LoadingState } from '#/components/shared/state'
+import { DeleteMeetingDialog, UpdateMeetingDialog } from '#/features/meetings/components/dialog'
+import { MeetingHeader } from '#/features/meetings/components/header'
+import {
+  ActiveState,
+  CancelledState,
+  CompletedState,
+  ProcessingState,
+  UpcomingState,
+} from '#/features/meetings/components/state'
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 
@@ -36,6 +41,13 @@ function MeetingIdPage() {
           onEdit={() => setUpdateMeetingDialogOpen(true)}
           onRemove={() => setDeleteMeetingDialogOpen(true)}
         />
+
+        {meeting.status === 'upcoming' && <UpcomingState />}
+        {meeting.status === 'processing' && <ProcessingState />}
+        {meeting.status === 'active' && <ActiveState />}
+        {meeting.status === 'completed' && <CompletedState />}
+        {meeting.status === 'cancelled' && <CancelledState />}
+        {}
       </div>
 
       <UpdateMeetingDialog

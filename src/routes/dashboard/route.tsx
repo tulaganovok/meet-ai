@@ -1,7 +1,7 @@
 import { SidebarProvider } from '#/components/ui/sidebar'
 import { getSessionFn } from '#/features/auth/utils/function'
-import DashboardNavbar from '#/features/dashboard/components/dashboard-navbar'
-import DashboardSidebar from '#/features/dashboard/components/dashboard-sidebar'
+import Navbar from '#/features/dashboard/components/navbar'
+import Sidebar from '#/features/dashboard/components/sidebar'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/dashboard')({
@@ -12,10 +12,10 @@ export const Route = createFileRoute('/dashboard')({
 function DashboardLayout() {
   return (
     <SidebarProvider>
-      <DashboardSidebar />
+      <Sidebar />
 
       <main className='flex flex-col w-screen h-screen bg-muted'>
-        <DashboardNavbar />
+        <Navbar />
         <Outlet />
       </main>
     </SidebarProvider>

@@ -83,8 +83,6 @@ export const createMeetingFn = createServerFn({ method: 'POST' })
   .middleware([authFnMiddleware])
   .inputValidator(meetingsInsertSchema)
   .handler(async ({ data, context }) => {
-    console.log(data, context)
-
     const [newMeeting] = await db
       .insert(meetings)
       .values({ ...data, userId: context.session.user.id })

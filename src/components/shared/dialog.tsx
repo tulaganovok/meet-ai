@@ -10,7 +10,7 @@ interface ResponsiveDialogProps {
   onOpenChange: (open: boolean) => void
 }
 
-export default function ResponsiveDialog({
+function ResponsiveDialog({
   title,
   description,
   children,
@@ -47,3 +47,5 @@ export default function ResponsiveDialog({
     </Dialog>
   )
 }
+
+export { ResponsiveDialog }

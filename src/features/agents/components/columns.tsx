@@ -1,4 +1,4 @@
-import GeneratedAvatar from '#/components/shared/generated-avatar'
+import { GeneratedAvatar } from '#/components/shared/avatar'
 import { Badge } from '#/components/ui/badge'
 import type { AgentsGetMany } from '#/integrations/trpc/router'
 import type { ColumnDef } from '@tanstack/react-table'

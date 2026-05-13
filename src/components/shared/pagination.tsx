@@ -6,7 +6,7 @@ interface PaginationProps {
   onPageChange: (page: number) => void
 }
 
-export default function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
+function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
   return (
     <div className='flex items-center justify-between'>
       <div className='flex-1 text-sm text-muted-foreground'>
@@ -35,3 +35,5 @@ export default function Pagination({ page, totalPages, onPageChange }: Paginatio
     </div>
   )
 }
+
+export { Pagination }

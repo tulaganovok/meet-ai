@@ -25,7 +25,7 @@ interface CommandSelectProps {
   className?: string
 }
 
-export default function CommandSelect({
+function CommandSelect({
   options,
   value,
   placeholder,
@@ -84,3 +84,5 @@ export default function CommandSelect({
     </>
   )
 }
+
+export { CommandSelect }

@@ -7,6 +7,7 @@ import { FaGithub, FaGoogle } from 'react-icons/fa'
 
 export const Route = createFileRoute('/(auth)/sign-in/')({
   component: SignInPage,
+  head: () => ({ meta: [{ title: 'Sign in | Meet AI' }] }),
 })
 
 function SignInPage() {

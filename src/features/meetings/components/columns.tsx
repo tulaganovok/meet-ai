@@ -1,4 +1,3 @@
-import GeneratedAvatar from '#/components/shared/generated-avatar'
 import { Badge } from '#/components/ui/badge'
 import type { MeetingsGetMany } from '#/integrations/trpc/router'
 import type { ColumnDef } from '@tanstack/react-table'
@@ -13,6 +12,7 @@ import {
 import { format } from 'date-fns'
 import humanizeDuration from 'humanize-duration'
 import { cn } from '#/lib/utils'
+import { GeneratedAvatar } from '#/components/shared/avatar'
 
 function formatDuration(seconds: number) {
   return humanizeDuration(seconds * 1000, { largest: 1, round: true, units: ['h', 'm', 's'] })

@@ -12,7 +12,7 @@ interface Props {
   setOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export default function DashboardCommand({ open, setOpen }: Props) {
+export default function Command({ open, setOpen }: Props) {
   const [search, setSearch] = useState('')
   //   const trpc = useTRPC()
 

@@ -4,7 +4,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { SearchIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
-export default function SearchFilter() {
+function SearchFilter() {
   const searchParams = Route.useSearch()
   const navigate = useNavigate()
 
@@ -38,3 +38,5 @@ export default function SearchFilter() {
     </div>
   )
 }
+
+export { SearchFilter }

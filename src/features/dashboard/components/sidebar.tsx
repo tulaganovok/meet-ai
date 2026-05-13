@@ -1,6 +1,6 @@
 import { Separator } from '#/components/ui/separator'
 import {
-  Sidebar,
+  Sidebar as ShadcnUISidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
@@ -23,11 +23,11 @@ const firstSection = linkOptions([
 
 const secondSection = linkOptions([{ to: '/dashboard/upgrade', label: 'Upgrade', icon: StarIcon }])
 
-export default function DashboardSidebar() {
+export default function Sidebar() {
   const { pathname } = useLocation()
 
   return (
-    <Sidebar>
+    <ShadcnUISidebar>
       <SidebarHeader className='text-sidebar-accent-foreground'>
         <Link to='/dashboard' className='flex items-center gap-2 px-2 pt-2'>
           <img src='/logo.svg' height={36} width={36} alt='Meet.AI' />
@@ -98,6 +98,6 @@ export default function DashboardSidebar() {
         <DashboardUserButton /> */}
         <UserBox />
       </SidebarFooter>
-    </Sidebar>
+    </ShadcnUISidebar>
   )
 }

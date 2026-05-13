@@ -1,3 +1,5 @@
-export default function NotFound() {
-  return <div>NotFound</div>
+function NotFoundComponent() {
+  return <div>NotFoundComponent</div>
 }
+
+export { NotFoundComponent }

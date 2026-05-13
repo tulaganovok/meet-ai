@@ -20,9 +20,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '#/components/ui/dropdown-menu'
-import GeneratedAvatar from '#/components/shared/generated-avatar'
 import { useIsMobile } from '#/hooks/use-mobile'
 import { Route } from '#/routes/dashboard/route'
+import { GeneratedAvatar } from '#/components/shared/avatar'
 
 export default function UserBox() {
   const { user } = Route.useLoaderData()

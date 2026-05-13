@@ -6,17 +6,18 @@ import { agentsInsertSchema } from '../utils/schema'
 import { Field, FieldError, FieldGroup, FieldLabel } from '#/components/ui/field'
 import { Input } from '#/components/ui/input'
 import { Button } from '#/components/ui/button'
-import GeneratedAvatar from '#/components/shared/generated-avatar'
 import { Textarea } from '#/components/ui/textarea'
 import { toast } from 'sonner'
 import { useRouter } from '@tanstack/react-router'
+import { GeneratedAvatar } from '#/components/shared/avatar'
 
 interface AgentFormProps {
   initialValues?: AgentGetOne
   onSuccess?: () => void
   onCancel?: () => void
 }
-export default function AgentForm({ initialValues, onSuccess, onCancel }: AgentFormProps) {
+
+function AgentForm({ initialValues, onSuccess, onCancel }: AgentFormProps) {
   const queryClient = useQueryClient()
   const trpc = useTRPC()
   const router = useRouter()
@@ -159,3 +160,5 @@ export default function AgentForm({ initialValues, onSuccess, onCancel }: AgentF
     </form>
   )
 }
+
+export { AgentForm }

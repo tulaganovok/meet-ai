@@ -8,7 +8,7 @@ interface DataTableProps<TData, TValue> {
   onRowClick?: (row: TData) => void
 }
 
-export function DataTable<TData, TValue>({
+function DataTable<TData, TValue>({
   variant,
   columns,
   data,
@@ -50,3 +50,5 @@ export function DataTable<TData, TValue>({
     </div>
   )
 }
+
+export { DataTable }

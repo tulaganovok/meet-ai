@@ -7,6 +7,7 @@ import { FaGithub, FaGoogle } from 'react-icons/fa'
 
 export const Route = createFileRoute('/(auth)/sign-up/')({
   component: SignUpPage,
+  head: () => ({ meta: [{ title: 'Sign up | Meet AI' }] }),
 })
 
 function SignUpPage() {

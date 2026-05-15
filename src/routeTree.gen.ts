@@ -17,6 +17,7 @@ import { Route as DashboardUpgradeIndexRouteImport } from './routes/dashboard/up
 import { Route as DashboardMeetingsIndexRouteImport } from './routes/dashboard/meetings/index'
 import { Route as DashboardAgentsIndexRouteImport } from './routes/dashboard/agents/index'
 import { Route as DashboardoverviewIndexRouteImport } from './routes/dashboard/(overview)/index'
+import { Route as CallMeetingIdIndexRouteImport } from './routes/call/$meetingId/index'
 import { Route as authSignUpIndexRouteImport } from './routes/(auth)/sign-up/index'
 import { Route as authSignInIndexRouteImport } from './routes/(auth)/sign-in/index'
 import { Route as ApiTrpcSplatRouteImport } from './routes/api/trpc/$'
@@ -62,6 +63,11 @@ const DashboardoverviewIndexRoute = DashboardoverviewIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const CallMeetingIdIndexRoute = CallMeetingIdIndexRouteImport.update({
+  id: '/call/$meetingId/',
+  path: '/call/$meetingId/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const authSignUpIndexRoute = authSignUpIndexRouteImport.update({
   id: '/sign-up/',
   path: '/sign-up/',
@@ -102,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/api/trpc/$': typeof ApiTrpcSplatRoute
   '/sign-in/': typeof authSignInIndexRoute
   '/sign-up/': typeof authSignUpIndexRoute
+  '/call/$meetingId/': typeof CallMeetingIdIndexRoute
   '/dashboard/': typeof DashboardoverviewIndexRoute
   '/dashboard/agents/': typeof DashboardAgentsIndexRoute
   '/dashboard/meetings/': typeof DashboardMeetingsIndexRoute
@@ -115,6 +122,7 @@ export interface FileRoutesByTo {
   '/api/trpc/$': typeof ApiTrpcSplatRoute
   '/sign-in': typeof authSignInIndexRoute
   '/sign-up': typeof authSignUpIndexRoute
+  '/call/$meetingId': typeof CallMeetingIdIndexRoute
   '/dashboard': typeof DashboardoverviewIndexRoute
   '/dashboard/agents': typeof DashboardAgentsIndexRoute
   '/dashboard/meetings': typeof DashboardMeetingsIndexRoute
@@ -132,6 +140,7 @@ export interface FileRoutesById {
   '/api/trpc/$': typeof ApiTrpcSplatRoute
   '/(auth)/sign-in/': typeof authSignInIndexRoute
   '/(auth)/sign-up/': typeof authSignUpIndexRoute
+  '/call/$meetingId/': typeof CallMeetingIdIndexRoute
   '/dashboard/(overview)/': typeof DashboardoverviewIndexRoute
   '/dashboard/agents/': typeof DashboardAgentsIndexRoute
   '/dashboard/meetings/': typeof DashboardMeetingsIndexRoute
@@ -148,6 +157,7 @@ export interface FileRouteTypes {
     | '/api/trpc/$'
     | '/sign-in/'
     | '/sign-up/'
+    | '/call/$meetingId/'
     | '/dashboard/'
     | '/dashboard/agents/'
     | '/dashboard/meetings/'
@@ -161,6 +171,7 @@ export interface FileRouteTypes {
     | '/api/trpc/$'
     | '/sign-in'
     | '/sign-up'
+    | '/call/$meetingId'
     | '/dashboard'
     | '/dashboard/agents'
     | '/dashboard/meetings'
@@ -177,6 +188,7 @@ export interface FileRouteTypes {
     | '/api/trpc/$'
     | '/(auth)/sign-in/'
     | '/(auth)/sign-up/'
+    | '/call/$meetingId/'
     | '/dashboard/(overview)/'
     | '/dashboard/agents/'
     | '/dashboard/meetings/'
@@ -191,6 +203,7 @@ export interface RootRouteChildren {
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiTrpcSplatRoute: typeof ApiTrpcSplatRoute
+  CallMeetingIdIndexRoute: typeof CallMeetingIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -250,6 +263,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/'
       preLoaderRoute: typeof DashboardoverviewIndexRouteImport
       parentRoute: typeof DashboardRouteRoute
+    }
+    '/call/$meetingId/': {
+      id: '/call/$meetingId/'
+      path: '/call/$meetingId'
+      fullPath: '/call/$meetingId/'
+      preLoaderRoute: typeof CallMeetingIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/(auth)/sign-up/': {
       id: '/(auth)/sign-up/'
@@ -350,6 +370,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiTrpcSplatRoute: ApiTrpcSplatRoute,
+  CallMeetingIdIndexRoute: CallMeetingIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

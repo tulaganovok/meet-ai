@@ -22,6 +22,8 @@
     "@fontsource-variable/geist": "^5.2.8",
     "@neondatabase/serverless": "^1.0.2",
     "@noble/ciphers": "^2.2.0",
+    "@stream-io/node-sdk": "^0.7.56",
+    "@stream-io/video-react-sdk": "^1.36.1",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "latest",
     "@tanstack/react-form": "latest",

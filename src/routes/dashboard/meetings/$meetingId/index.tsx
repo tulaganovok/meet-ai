@@ -42,9 +42,9 @@ function MeetingIdPage() {
           onRemove={() => setDeleteMeetingDialogOpen(true)}
         />
 
-        {meeting.status === 'upcoming' && <UpcomingState />}
+        {meeting.status === 'upcoming' && <UpcomingState meetingId={meeting.id} />}
         {meeting.status === 'processing' && <ProcessingState />}
-        {meeting.status === 'active' && <ActiveState />}
+        {meeting.status === 'active' && <ActiveState meetingId={meeting.id} />}
         {meeting.status === 'completed' && <CompletedState />}
         {meeting.status === 'cancelled' && <CancelledState />}
         {}

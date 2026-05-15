@@ -14,7 +14,7 @@ export const authFnMiddleware = createMiddleware({ type: 'function' }).server(as
 
 export const authReqMiddleware = createMiddleware({ type: 'request' }).server(
   async ({ pathname, next }) => {
-    const privateRoutes = ['/dashboard']
+    const privateRoutes = ['/dashboard', '/call']
     const publicRoutes = ['/', '/sign-in', '/sign-up']
 
     const headers = getRequestHeaders()

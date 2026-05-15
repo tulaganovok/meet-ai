@@ -3,6 +3,7 @@ import type { TRPCRouterRecord } from '@trpc/server'
 import {
   createMeetingFn,
   deleteMeetingFn,
+  generateStreamUserTokenFn,
   getManyMeetingsFn,
   getOneMeetingFn,
   updateMeetingFn,
@@ -31,4 +32,5 @@ export const meetingsRouter = {
   delete: protectedProcedure
     .input(meetingsDeleteSchema)
     .mutation(({ input }) => deleteMeetingFn({ data: input })),
+  generateStreamUserToken: protectedProcedure.mutation(() => generateStreamUserTokenFn()),
 } satisfies TRPCRouterRecord

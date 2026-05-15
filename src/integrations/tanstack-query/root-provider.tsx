@@ -5,7 +5,7 @@ import { createTRPCClient, httpBatchStreamLink } from '@trpc/client'
 import { createTRPCOptionsProxy } from '@trpc/tanstack-react-query'
 import type { TRPCRouter } from '#/integrations/trpc/router'
 import { TRPCProvider } from '#/integrations/trpc/react'
-import { getRequestHeaders } from '@tanstack/react-start/server'
+import { getRequestHeadersFn } from '#/features/auth/utils/function'
 
 function getUrl() {
   const base = (() => {
@@ -20,7 +20,10 @@ export const trpcClient = createTRPCClient<TRPCRouter>({
     httpBatchStreamLink({
       transformer: superjson,
       url: getUrl(),
-      headers: environmentManager.isServer() ? getRequestHeaders() : undefined,
+      headers: async () => {
+        if (!environmentManager.isServer()) return {}
+        return await getRequestHeadersFn()
+      },
     }),
   ],
 })

@@ -68,7 +68,7 @@ function AgentFilter() {
 
   if (isLoading)
     return (
-      <Select defaultValue='isLoading'>
+      <Select defaultValue='isLoading' value='isLoading'>
         <SelectTrigger className='w-full bg-background md:min-w-40'>
           <SelectValue />
         </SelectTrigger>

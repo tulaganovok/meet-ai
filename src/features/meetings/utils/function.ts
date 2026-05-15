@@ -11,6 +11,8 @@ import {
 } from './schema'
 import { and, count, desc, eq, getTableColumns, ilike, sql } from 'drizzle-orm'
 import { TRPCError } from '@trpc/server'
+import { streamClient } from '#/lib/stream'
+import { generateAvatarUrl } from '#/lib/utils'
 
 export const getManyMeetingsFn = createServerFn({ method: 'GET' })
   .middleware([authFnMiddleware])
@@ -83,10 +85,36 @@ export const createMeetingFn = createServerFn({ method: 'POST' })
   .middleware([authFnMiddleware])
   .inputValidator(meetingsInsertSchema)
   .handler(async ({ data, context }) => {
+    const { id } = context.session.user
+
     const [newMeeting] = await db
       .insert(meetings)
-      .values({ ...data, userId: context.session.user.id })
+      .values({ ...data, userId: id })
       .returning()
+
+    const newCall = streamClient.video.call('default', newMeeting.id)
+
+    await newCall.create({
+      data: {
+        created_by_id: id,
+        custom: { meetingId: newMeeting.id, meetingName: newMeeting.name },
+        settings_override: {
+          transcription: { language: 'en', mode: 'auto-on', closed_caption_mode: 'auto-on' },
+          recording: { mode: 'auto-on', quality: '1080p' },
+        },
+      },
+    })
+
+    const [existingAgent] = await db.select().from(agents).where(eq(agents.id, newMeeting.agentId))
+
+    await streamClient.upsertUsers([
+      {
+        id: existingAgent.id,
+        name: existingAgent.name,
+        role: 'user',
+        image: generateAvatarUrl({ seed: existingAgent.name, variant: 'botttsNeutral' }),
+      },
+    ])
 
     return newMeeting
   })
@@ -120,4 +148,22 @@ export const deleteMeetingFn = createServerFn({ method: 'POST' })
     if (!deletedMeeting) throw new TRPCError({ code: 'NOT_FOUND', message: 'Meeting not found' })
 
     return deletedMeeting
+  })
+
+export const generateStreamUserTokenFn = createServerFn({ method: 'POST' })
+  .middleware([authFnMiddleware])
+  .handler(async ({ context }) => {
+    const { id, name, image } = context.session.user
+    const currentUserImage = image ?? generateAvatarUrl({ variant: 'initials', seed: name })
+
+    await streamClient.upsertUsers([{ id, name, role: 'admin', image: currentUserImage }])
+
+    const now = Math.floor(Date.now() / 1000)
+    const streamUserToken = streamClient.generateUserToken({
+      user_id: id,
+      iat: now - 60,
+      exp: now + 60 * 60,
+    })
+
+    return streamUserToken
   })

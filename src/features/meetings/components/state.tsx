@@ -1,8 +1,13 @@
 import { EmptyState } from '#/components/shared/state'
 import { Button } from '#/components/ui/button'
+import { Link } from '@tanstack/react-router'
 import { VideoIcon } from 'lucide-react'
 
-function UpcomingState() {
+interface UpcomingStateProps {
+  meetingId: string
+}
+
+function UpcomingState({ meetingId }: UpcomingStateProps) {
   return (
     <div className='bg-white rounded-lg px-4 py-5 flex flex-col gap-y-8 items-center justify-center'>
       <EmptyState
@@ -12,11 +17,11 @@ function UpcomingState() {
       />
 
       <div className='flex flex-col-reverse lg:flex-row lg:justify-center items-center gap-2 w-full'>
-        <Button className='w-full lg:w-auto'>
-          {/* <Link href={`/call/${meetingId}`}> */}
-          <VideoIcon />
-          Start meeting
-          {/* </Link> */}
+        <Button className='w-full lg:w-auto' asChild>
+          <Link to={`/call/$meetingId`} params={{ meetingId }}>
+            <VideoIcon />
+            Start meeting
+          </Link>
         </Button>
       </div>
     </div>
@@ -35,7 +40,11 @@ function ProcessingState() {
   )
 }
 
-function ActiveState() {
+interface ActiveStateProps {
+  meetingId: string
+}
+
+function ActiveState({ meetingId }: ActiveStateProps) {
   return (
     <div className='bg-white rounded-lg px-4 py-5 flex flex-col gap-y-8 items-center justify-center'>
       <EmptyState
@@ -45,11 +54,11 @@ function ActiveState() {
       />
 
       <div className='flex flex-col-reverse lg:flex-row lg:justify-center items-center gap-2 w-full'>
-        <Button className='w-full lg:w-auto'>
-          {/* <Link href={`/call/${meetingId}`}> */}
-          <VideoIcon />
-          Join meeting
-          {/* </Link> */}
+        <Button className='w-full lg:w-auto' asChild>
+          <Link to={`/call/$meetingId`} params={{ meetingId }}>
+            <VideoIcon />
+            Join meeting
+          </Link>
         </Button>
       </div>
     </div>
